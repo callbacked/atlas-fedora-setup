@@ -19,6 +19,10 @@ echo ":${vnc_display}=${vnc_user}" >> /etc/tigervnc/vncserver.users
 # Set a VNC password for the user
 su - ${vnc_user} -c "vncpasswd"
 
+# Set the desktop session
+read -p "Enter the desktop session (e.g., gnome, xfce, etc.): " desktop_session
+echo "session=${desktop_session}" >> /etc/tigervnc/vncserver-config-defaults
+
 # Start the VNC server
 systemctl start vncserver@:${vnc_display}
 
