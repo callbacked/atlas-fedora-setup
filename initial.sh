@@ -53,7 +53,7 @@ sudo mount -a
 # Change the default XDG directories
 echo "Changing default XDG directories..."
 cat <<EOT > /home/alex/.config/user-dirs.dirs
-XDG_DESKTOP_DIR="/home/alex/Desktop"
+XDG_DESKTOP_DIR="/home/alex/2TBHDDSPLIT/Desktop"
 XDG_DOCUMENTS_DIR="/home/alex/2TBHDDSPLIT/Documents"
 XDG_DOWNLOAD_DIR="/home/alex/2TBHDDSPLIT/Downloads"
 XDG_MUSIC_DIR="/home/alex/2TBHDDSPLIT/Music"
