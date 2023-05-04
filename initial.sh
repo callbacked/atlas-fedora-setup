@@ -65,4 +65,18 @@ EOT
 
 xdg-user-dirs-update
 
+# Delete old XDG folders from /home/alex
+echo "Deleting old XDG folders from /home/alex..."
+rm -rf /home/alex/Desktop
+rm -rf /home/alex/Documents
+rm -rf /home/alex/Downloads
+rm -rf /home/alex/Music
+rm -rf /home/alex/Pictures
+rm -rf /home/alex/Public
+rm -rf /home/alex/Templates
+rm -rf /home/alex/Videos
+
+echo "Old XDG folders have been deleted."
+
+
 echo "Script completed sucessfully -- reboot recommended for the GPU Driver"
