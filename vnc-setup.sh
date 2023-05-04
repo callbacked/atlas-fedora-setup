@@ -10,11 +10,23 @@ fi
 dnf install -y tigervnc-server tigervnc
 
 # Configure the VNC server
-cp /usr/lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@.service
-
-# Set the user who will run the VNC server
 read -p "Enter the username for the VNC server: " vnc_user
-sed -i "s|<USER>|${vnc_user}|g" /etc/systemd/system/vncserver@.service
+
+cat << EOF > /etc/systemd/system/vncserver@:1.service
+[Unit]
+Description=Remote desktop service (VNC)
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=${vnc_user}
+ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
+ExecStart=/usr/bin/vncserver %i
+ExecStop=/usr/bin/vncserver -kill %i
+
+[Install]
+WantedBy=multi-user.target
+EOF
 
 # Reload systemd configuration
 systemctl daemon-reload
