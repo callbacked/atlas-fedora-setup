@@ -78,5 +78,25 @@ rm -rf /home/alex/Videos
 
 echo "Old XDG folders have been deleted."
 
+# Install Xrdp and Tigervnc-server
+echo "Installing Xrdp and Tigervnc-server..."
+dnf -y install xrdp tigervnc-server
+
+# Enable and start Xrdp service
+echo "Enabling and starting Xrdp service..."
+systemctl enable --now xrdp
+
+# Check if Firewalld is running
+if systemctl is-active --quiet firewalld; then
+    # Allow RDP port
+    echo "Allowing RDP port through the firewall..."
+    firewall-cmd --add-port=3389/tcp
+    firewall-cmd --runtime-to-permanent
+else
+    echo "Firewalld is not running, no need to configure the firewall."
+fi
+
+echo "Installation and configuration of Xrdp is complete
+
 
 echo "Script completed sucessfully -- reboot recommended for the GPU Driver"
