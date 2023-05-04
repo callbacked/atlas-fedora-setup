@@ -1,34 +1,32 @@
 #!/bin/bash
 
-# Install TigerVNC and related packages
-echo "Installing TigerVNC and related packages..."
-sudo dnf install -y tigervnc-server tigervnc tigervnc-viewer
+# Check if the user is root
+if [ "$(id -u)" != "0" ]; then
+    echo "This script must be run as root."
+    exit 1
+fi
+
+# Install necessary packages
+dnf install -y tigervnc-server tigervnc
 
 # Configure the VNC server
-echo "Configuring the VNC server..."
-read -p "Enter the display number (e.g., 1): " DISPLAY_NUM
-sudo cp /usr/lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:${DISPLAY_NUM}.service
+cp /usr/lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@.service
 
-# Substitute the user in the service file
-read -p "Enter your username (e.g., alex): " USERNAME
-sudo sed -i "s|<USER>|${USERNAME}|g" /etc/systemd/system/vncserver@:${DISPLAY_NUM}.service
+# Set the user who will run the VNC server
+read -p "Enter the username for the VNC server: " vnc_user
+sed -i "s|<USER>|${vnc_user}|g" /etc/systemd/system/vncserver@.service
 
-# Reload the systemd daemon
-sudo systemctl daemon-reload
+# Reload systemd configuration
+systemctl daemon-reload
 
-# Create the VNC password
-echo "Setting up the VNC password for user ${USERNAME}..."
-sudo -u ${USERNAME} vncpasswd
+# Set a VNC password for the user
+su - ${vnc_user} -c "vncpasswd"
 
 # Enable and start the VNC server
-echo "Enabling and starting the VNC server..."
-sudo systemctl enable vncserver@:${DISPLAY_NUM}.service
-sudo systemctl start vncserver@:${DISPLAY_NUM}.service
+systemctl enable --now vncserver@:1.service
 
-# Configure the firewall to allow VNC connections
-echo "Configuring the firewall to allow VNC connections..."
-VNC_PORT=$((5900 + DISPLAY_NUM))
-sudo firewall-cmd --add-port=${VNC_PORT}/tcp --permanent
-sudo firewall-cmd --reload
+# Add firewall rule to allow VNC traffic
+firewall-cmd --add-service=vnc-server --permanent
+firewall-cmd --reload
 
-echo "VNC server setup completed successfully."
+echo "VNC server setup completed."
