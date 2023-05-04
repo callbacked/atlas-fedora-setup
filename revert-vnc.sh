@@ -7,13 +7,10 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 # Stop and disable the VNC server
-systemctl disable --now vncserver@:1.service
+systemctl disable --now vncserver@:${vnc_display}
 
-# Remove the VNC server configuration
-rm -f /etc/systemd/system/vncserver@.service
-
-# Reload systemd configuration
-systemctl daemon-reload
+# Remove the user mapping
+sed -i "/:${vnc_display}=${vnc_user}/d" /etc/tigervnc/vncserver.users
 
 # Remove VNC server packages
 dnf remove -y tigervnc-server tigervnc
