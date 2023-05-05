@@ -96,7 +96,7 @@ else
     echo "Firewalld is not running, no need to configure the firewall."
 fi
 
-echo "Installation and configuration of Xrdp is complete
+echo "Installation and configuration of Xrdp is complete"
 
 
 echo "Script completed sucessfully -- reboot recommended for the GPU Driver"
