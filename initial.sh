@@ -1,30 +1,5 @@
 #!/bin/bash
 
-# Define serial numbers
-SERIAL_1TBNVME="2018B4806653"
-SERIAL_2TBNVME1="214202800464"
-SERIAL_2TBNVME2="214202800499"
-SERIAL_2TBHDDSPLIT="WD-WX32D81065UT"
-
-# Get device names based on serial numbers
-DEVICE_1=$(sudo smartctl --scan | awk -v serial=$SERIAL_1TBNVME '$3 == serial {print $1}')
-DEVICE_2=$(sudo smartctl --scan | awk -v serial=$SERIAL_2TBNVME1 '$3 == serial {print $1}')
-DEVICE_3=$(sudo smartctl --scan | awk -v serial=$SERIAL_2TBNVME2 '$3 == serial {print $1}')
-DEVICE_4=$(sudo smartctl --scan | awk -v serial=$SERIAL_2TBHDDSPLIT '$3 == serial {print $1}')
-
-# Get UUIDs based on device names and filesystem type
-UUID_1=$(sudo blkid -s UUID -o value $(lsblk -o NAME,FSTYPE $DEVICE_1 | awk '$2 == "ext4" {print "/dev/"$1}'))
-UUID_2=$(sudo blkid -s UUID -o value $(lsblk -o NAME,FSTYPE $DEVICE_2 | awk '$2 == "ext4" {print "/dev/"$1}'))
-UUID_3=$(sudo blkid -s UUID -o value $(lsblk -o NAME,FSTYPE $DEVICE_3 | awk '$2 == "ext4" {print "/dev/"$1}'))
-UUID_4=$(sudo blkid -s UUID -o value $(lsblk -o NAME,FSTYPE $DEVICE_4 | awk '$2 == "ext4" {print "/dev/"$1}'))
-
-# Print the obtained UUIDs
-echo "Obtained UUIDs:"
-echo "1TBNVME: $UUID_1"
-echo "2TBNVME1: $UUID_2"
-echo "2TBNVME2: $UUID_3"
-echo "2TBHDDSPLIT: $UUID_4"
-
 # Update the system
 echo "Updating the system..."
 sudo dnf update -y
