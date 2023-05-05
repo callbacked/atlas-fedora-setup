@@ -10,34 +10,38 @@ read -p "Enter UUID for 2TBHDDSPLIT: " UUID_4
 echo "Updating the system..."
 sudo dnf update -y
 
-# Add RPM Fusion repository
+# Add RPM Fusion repository and Flatpak
 echo "Adding RPM Fusion repository..."
 sudo dnf install -y "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
 sudo dnf install -y "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-
-# Update repositories
-echo "Updating repositories..."
-sudo dnf update -y
+echo "Installing Flatpak..."
+sudo dnf install -y flatpak
+echo "Adding Flathub repository..."
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Install NVIDIA drivers
 echo "Installing NVIDIA drivers..."
 sudo dnf install -y akmod-nvidia
 sudo dnf install -y xorg-x11-drv-nvidia-cuda
 
-#install virtualization stuff
-
+# Install virtualization stuff
 echo "Installing virtualization tools..."
 sudo dnf install -y @virtualization
 
-#enable IOMMU
+# Install Flatpak apps
+echo "Installing Flatpak apps..."
+flatpak install -y flathub com.discordapp.Discord
+flatpak install -y flathub com.valvesoftware.Steam
+flatpak install -y flathub sh.cider.Cider
+flatpak install -y flathub org.qbittorrent.qBittorrent
+flatpak install -y flathub com.mojang.Minecraft
+flatpak install -y flathub com.moonlight_stream.Moonlight
+flatpak install -y flathub io.mpv.Mpv
 
-echo "Enabling Intel IOMMU and iommu=pt in /etc/sysconfig/grub..."
-sudo sed -i 's/^GRUB_CMDLINE_LINUX="\(.*\)"$/GRUB_CMDLINE_LINUX="\1 intel_iommu=on iommu=pt"/' /etc/sysconfig/grub
-
-# Update the GRUB configuration
-echo "Updating GRUB configuration..."
-sudo grub2-mkconfig -o /etc/grub2.cfg
-
+# Install media codecs and ffmpeg-libs
+echo "Installing media codecs and ffmpeg-libs..."
+sudo dnf groupupdate -y multimedia sound-and-video
+sudo dnf install -y ffmpeg-libs
 
 # Create directories
 echo "Creating directories in /home/alex..."
