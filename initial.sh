@@ -43,6 +43,10 @@ echo "Installing media codecs and ffmpeg-libs..."
 sudo dnf groupupdate -y multimedia sound-and-video --allowerasing
 sudo dnf install -y ffmpeg-libs --allowerasing
 
+# Install neofetch (necessary)
+echo "Installing neofetch"
+sudo dnf install -y neofetch
+
 # Create directories
 echo "Creating directories in /home/alex..."
 mkdir -p /home/alex/1TBNVME
