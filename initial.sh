@@ -112,5 +112,15 @@ fi
 
 echo "Installation and configuration of Xrdp is complete"
 
+# Reboot after
+echo "Script completed successfully. The system will reboot in 10 seconds to apply changes."
 
-echo "Script completed sucessfully -- reboot recommended for the GPU Driver"
+for i in {10..1}; do
+  echo -ne "\rRebooting in $i seconds..."
+  sleep 1
+done
+
+echo -e "\rRebooting now.                      "
+sudo reboot
+
+
