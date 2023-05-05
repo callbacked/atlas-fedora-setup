@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Ask for UUIDs
+read -p "Enter UUID for 1TBNVME: " UUID_1
+read -p "Enter UUID for 2TBNVME1: " UUID_2
+read -p "Enter UUID for 2TBNVME2: " UUID_3
+read -p "Enter UUID for 2TBHDDSPLIT: " UUID_4
+
 # Update the system
 echo "Updating the system..."
 sudo dnf update -y
@@ -18,29 +24,11 @@ echo "Installing NVIDIA drivers..."
 sudo dnf install -y akmod-nvidia
 sudo dnf install -y xorg-x11-drv-nvidia-cuda
 
-#Installing virtualization stuff
-echo "Installing @virtualization"
-sudo dnf install @virtualization -y
+#install virtualization stuff
 
-# Install Xrdp and Tigervnc-server
-echo "Installing Xrdp and Tigervnc-server..."
-dnf -y install xrdp tigervnc-server
+echo "Installing virtualization tools..."
+sudo dnf install -y @virtualization
 
-# Enable and start Xrdp service
-echo "Enabling and starting Xrdp service..."
-systemctl enable --now xrdp
-
-# Check if Firewalld is running
-if systemctl is-active --quiet firewalld; then
-    # Allow RDP port
-    echo "Allowing RDP port through the firewall..."
-    firewall-cmd --add-port=3389/tcp
-    firewall-cmd --runtime-to-permanent
-else
-    echo "Firewalld is not running, no need to configure the firewall."
-fi
-
-echo "Installation and configuration of Xrdp is complete"
 
 # Create directories
 echo "Creating directories in /home/alex..."
@@ -94,5 +82,26 @@ rm -rf /home/alex/Templates
 rm -rf /home/alex/Videos
 
 echo "Old XDG folders have been deleted."
+
+# Install Xrdp and Tigervnc-server
+echo "Installing Xrdp and Tigervnc-server..."
+dnf -y install xrdp tigervnc-server
+
+# Enable and start Xrdp service
+echo "Enabling and starting Xrdp service..."
+systemctl enable --now xrdp
+
+# Check if Firewalld is running
+if systemctl is-active --quiet firewalld; then
+    # Allow RDP port
+    echo "Allowing RDP port through the firewall..."
+    firewall-cmd --add-port=3389/tcp
+    firewall-cmd --runtime-to-permanent
+else
+    echo "Firewalld is not running, no need to configure the firewall."
+fi
+
+echo "Installation and configuration of Xrdp is complete"
+
 
 echo "Script completed sucessfully -- reboot recommended for the GPU Driver"
