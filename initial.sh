@@ -12,6 +12,13 @@ UUID_2=$(lsblk -o UUID,SERIAL | awk -v serial=$SERIAL_2TBNVME1 '$2 == serial {pr
 UUID_3=$(lsblk -o UUID,SERIAL | awk -v serial=$SERIAL_2TBNVME2 '$2 == serial {print $1}')
 UUID_4=$(lsblk -o UUID,SERIAL,FSTYPE | awk -v serial=$SERIAL_2TBHDDSPLIT '$2 == serial && $3 == "ext4" {print $1}')
 
+# Print the obtained UUIDs
+echo "Obtained UUIDs:"
+echo "1TBNVME: $UUID_1"
+echo "2TBNVME1: $UUID_2"
+echo "2TBNVME2: $UUID_3"
+echo "2TBHDDSPLIT: $UUID_4"
+
 # Update the system
 echo "Updating the system..."
 sudo dnf update -y
