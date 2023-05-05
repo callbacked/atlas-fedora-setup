@@ -40,8 +40,8 @@ flatpak install -y flathub io.mpv.Mpv
 
 # Install media codecs and ffmpeg-libs
 echo "Installing media codecs and ffmpeg-libs..."
-sudo dnf groupupdate -y multimedia sound-and-video
-sudo dnf install -y ffmpeg-libs
+sudo dnf groupupdate -y multimedia sound-and-video --allowerasing
+sudo dnf install -y ffmpeg-libs --allowerasing
 
 # Create directories
 echo "Creating directories in /home/alex..."
