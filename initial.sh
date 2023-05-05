@@ -37,6 +37,7 @@ flatpak install -y flathub org.qbittorrent.qBittorrent
 flatpak install -y flathub com.mojang.Minecraft
 flatpak install -y flathub com.moonlight_stream.Moonlight
 flatpak install -y flathub io.mpv.Mpv
+sudo dnf install -y steam-devices
 
 # Install media codecs and ffmpeg-libs
 echo "Installing media codecs and ffmpeg-libs..."
