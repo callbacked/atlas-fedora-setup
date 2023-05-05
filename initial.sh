@@ -6,11 +6,17 @@ SERIAL_2TBNVME1="214202800464"
 SERIAL_2TBNVME2="214202800499"
 SERIAL_2TBHDDSPLIT="WD-WX32D81065UT"
 
-# Get UUIDs based on serial numbers
-UUID_1=$(lsblk -o UUID,SERIAL | awk -v serial=$SERIAL_1TBNVME '$2 == serial {print $1}')
-UUID_2=$(lsblk -o UUID,SERIAL | awk -v serial=$SERIAL_2TBNVME1 '$2 == serial {print $1}')
-UUID_3=$(lsblk -o UUID,SERIAL | awk -v serial=$SERIAL_2TBNVME2 '$2 == serial {print $1}')
-UUID_4=$(lsblk -o UUID,SERIAL,FSTYPE | awk -v serial=$SERIAL_2TBHDDSPLIT '$2 == serial && $3 == "ext4" {print $1}')
+# Get device names based on serial numbers
+DEVICE_1=$(sudo smartctl --scan | awk -v serial=$SERIAL_1TBNVME '$3 == serial {print $1}')
+DEVICE_2=$(sudo smartctl --scan | awk -v serial=$SERIAL_2TBNVME1 '$3 == serial {print $1}')
+DEVICE_3=$(sudo smartctl --scan | awk -v serial=$SERIAL_2TBNVME2 '$3 == serial {print $1}')
+DEVICE_4=$(sudo smartctl --scan | awk -v serial=$SERIAL_2TBHDDSPLIT '$3 == serial {print $1}')
+
+# Get UUIDs based on device names
+UUID_1=$(sudo blkid -s UUID -o value $DEVICE_1)
+UUID_2=$(sudo blkid -s UUID -o value $DEVICE_2)
+UUID_3=$(sudo blkid -s UUID -o value $DEVICE_3)
+UUID_4=$(sudo blkid -s UUID -o value $(lsblk -o NAME,FSTYPE $DEVICE_4 | awk '$2 == "ext4" {print "/dev/"$1}'))
 
 # Print the obtained UUIDs
 echo "Obtained UUIDs:"
