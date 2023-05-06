@@ -124,6 +124,22 @@ fi
 
 echo "Installation and configuration of Xrdp is complete"
 
+# Disabling internal motherboard BT Adapter (already have BT dongle)
+VENDOR_ID="8087"
+PRODUCT_ID="0026"
+UDEV_RULES_FILE="/etc/udev/rules.d/81-bluetooth-hci.rules"
+
+# Check if the udev rule already exists
+if grep -q "$VENDOR_ID" "$UDEV_RULES_FILE" && grep -q "$PRODUCT_ID" "$UDEV_RULES_FILE"; then
+    echo "Udev rule for disabling Intel Corp. AX201 Bluetooth already exists."
+else
+    # Create the udev rule to disable the Intel Corp. AX201 Bluetooth
+    echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"$VENDOR_ID\", ATTRS{idProduct}==\"$PRODUCT_ID\", ATTR{authorized}=\"0\"" >> $UDEV_RULES_FILE
+    echo "Udev rule created. Reboot your system for the changes to take effect."
+fi
+
+echo "To re-enable the Intel Corp. AX201 Bluetooth, remove or comment out the corresponding line in $UDEV_RULES_FILE and reboot your system."
+
 # Reboot after
 echo "Script completed successfully. The system will reboot in 10 seconds to apply changes."
 
