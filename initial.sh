@@ -38,6 +38,7 @@ flatpak install -y flathub com.mojang.Minecraft
 flatpak install -y flathub com.moonlight_stream.Moonlight
 flatpak install -y flathub io.mpv.Mpv
 flatpak install flathub no.mifi.losslesscut
+flatpak install flathub us.zoom.Zoom
 sudo dnf install -y steam-devices
 sudo dnf install -y flatseal
 
