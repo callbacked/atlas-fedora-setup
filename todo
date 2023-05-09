@@ -1,0 +1,40 @@
+Automation
+
+- Enable IOMMU and force drivers
+- Configure Libvert
+[By this step you make the VM urself lol]
+- Adding ROM file
+- Adding VM Scripts (using the ones I edited)
+- Looking Glass installation
+- Custom .desktop file for Looking Glass
+---------------------------------------------------
+
+Remember:
+https://gitlab.com/risingprismtv/single-gpu-passthrough/-/wikis/home (main thing to follow)
+https://www.youtube.com/watch?v=eTWf5D092VY (only USE IN STEP 1 & 2)
+        - Primarily focused on this:
+        5:10 Configure Linux
+        sudo vi /etc/sysconfig/grub
+        Content to add: intel_iommu=on iommu=pt
+        sudo grub2-mkconfig -o /etc/grub2.cfg
+        sudo vi /etc/dracut.conf.d/local.conf
+        add_driver+=" vfio vfio_iommu_type1 vfio_pci" (vfio_virqfd NOT NEEDED)
+        sudo dracut -f --kver `uname -r`
+https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF (USE IN STEP 2) (isolate GPU drivers on boot CHECK 3.1)
+
+
+
+https://looking-glass.io/docs/B6/install/
+
+
+-------------------
+other (audio related):
+
+sudo dnf swap --allowerasing pulseaudio pipewire-pulseaudio
+
+sudo dnf swap swap wireplumber pipewire-media-session
+
+
+
+
+
