@@ -34,6 +34,14 @@ sudo dnf swap --allowerasing pulseaudio pipewire-pulseaudio
 
 sudo dnf swap swap wireplumber pipewire-media-session
 
+[SELinux stuff to enable audio on virt manager]:
+
+sudo dnf install -y policycoreutils-python-utils
+
+sudo grep qemu /var/log/audit/audit.log | audit2allow -M qemu_pulseaudio
+
+sudo semodule -i qemu_pulseaudio.pp
+
 
 
 
