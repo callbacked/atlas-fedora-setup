@@ -41,8 +41,9 @@ sudo dnf install -y policycoreutils-python-utils
 sudo grep qemu /var/log/audit/audit.log | audit2allow -M qemu_pulseaudio
 
 sudo semodule -i qemu_pulseaudio.pp
-
-
-
+---------------------------------------------------------
+Remaining kinks to iron out:
+Network bridge not working
+VM stops working after trying to boot it up a second time
 
 
