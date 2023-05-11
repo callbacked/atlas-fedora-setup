@@ -44,7 +44,7 @@ sudo semodule -i qemu_pulseaudio.pp
 ---------------------------------------------------------
 Remaining kinks to iron out:
 Network bridge not working (fixed)
-        - note: MY FUCKNIG HERO https://www.youtube.com/watch?v=DYpaX4BnNlg 
+        - note: MY FUCKING HERO https://www.youtube.com/watch?v=DYpaX4BnNlg 
 VM stops working after trying to boot it up a second time (probably never fixing this)
 
 
