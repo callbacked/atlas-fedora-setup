@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Add PCI IDs for the NVIDIA Graphics Card
-read -p "Enter the PCI IDs for your NVIDIA Graphics Card (e.g., 10de:13c2,10de:0fbb): " pci_ids
+read -p "Enter the PCI IDs for your NVIDIA Graphics Card (e.g., 10de:13c2,10de:0fbb) run lspci -nnk | grep NVIDIA: " pci_ids
 
 if ! grep -qE 'GRUB_CMDLINE_LINUX.*intel_iommu=on' /etc/default/grub; then
   sed -i "s/\(GRUB_CMDLINE_LINUX=\"[^\"].*\)\"/\1 intel_iommu=on iommu=pt vfio-pci.ids=$pci_ids\"/" /etc/default/grub
